@@ -32,7 +32,7 @@ export function MediaGrid({ assets, filter }: MediaGridProps) {
             <MediaImage
               asset={asset}
               displayWidth={600}
-              priority={index < 9}
+              priority={index < 12}
               className="w-full rounded-lg object-cover"
             />
           ) : (
