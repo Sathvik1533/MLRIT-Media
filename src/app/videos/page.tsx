@@ -11,8 +11,8 @@ export default function VideosPage() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">Videos</h1>
-      <p className="text-gray-500 mb-8">{videos.length} videos</p>
+      <h1 className="text-3xl font-bold mb-1">Videos</h1>
+      <p className="text-gray-400 mb-8">{videos.length} videos from campus events</p>
       <MediaGrid assets={videos} />
     </main>
   );
