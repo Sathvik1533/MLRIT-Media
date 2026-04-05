@@ -8,62 +8,116 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-white border-b border-gray-100 px-4 py-16">
+      <section className="px-6 pt-16 pb-0" style={{ background: "var(--surface)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl">
-            <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full mb-4 tracking-wide uppercase">
+            <div
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest mb-5"
+              style={{ color: "var(--accent)" }}
+            >
+              <span className="inline-block w-6 h-px" style={{ background: "var(--accent)" }} />
               Official Media Gallery
-            </span>
-            <h1 className="text-5xl font-bold tracking-tight text-gray-900 leading-tight">
-              MLRIT Campus <br />
-              <span className="text-blue-600">Moments</span>
+            </div>
+            <h1
+              className="leading-none tracking-tight"
+              style={{
+                fontFamily: "var(--font-fraunces)",
+                fontWeight: 900,
+                fontSize: "clamp(44px, 7vw, 80px)",
+                letterSpacing: "-0.04em",
+                color: "var(--text)",
+              }}
+            >
+              MLRIT Campus{" "}
+              <em style={{ color: "var(--accent)", fontStyle: "italic" }}>
+                Moments
+              </em>
             </h1>
-            <p className="mt-4 text-lg text-gray-500 leading-relaxed">
+            <p className="mt-4 text-base leading-relaxed" style={{ color: "var(--text-2)" }}>
               {getImages().length} photos and {getVideos().length} videos from
               events, sports, cultural fests, and campus life.
             </p>
-            <div className="mt-8 flex gap-3">
+            <div className="mt-7 flex gap-3 flex-wrap">
               <Link
                 href="/gallery"
-                className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
+                className="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-150 hover:brightness-110"
+                style={{ background: "var(--accent)", color: "#0a0a0a" }}
               >
                 Browse Gallery
               </Link>
               <Link
                 href="/videos"
-                className="px-5 py-2.5 border border-gray-200 bg-white text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors"
+                className="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-150"
+                style={{
+                  border: "1px solid var(--border)",
+                  color: "var(--text-2)",
+                }}
               >
                 Watch Videos
               </Link>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Stats bar */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex gap-8">
+        {/* Stats strip */}
+        <div
+          className="mt-12 max-w-7xl mx-auto grid grid-cols-4 border-t"
+          style={{ borderColor: "var(--border)" }}
+        >
           {[
-            { label: "Total Assets", value: MEDIA_ASSETS.length },
+            { label: "Total Assets", value: MEDIA_ASSETS.length, suffix: "+" },
             { label: "Photos", value: getImages().length },
             { label: "Videos", value: getVideos().length },
             { label: "Categories", value: 6 },
-          ].map(({ label, value }) => (
-            <div key={label}>
-              <p className="text-2xl font-bold text-gray-900">{value}</p>
-              <p className="text-xs text-gray-400 uppercase tracking-wide">{label}</p>
+          ].map(({ label, value, suffix }) => (
+            <div
+              key={label}
+              className="py-6 pr-8"
+              style={{ borderRight: "1px solid var(--border)" }}
+            >
+              <p
+                className="leading-none"
+                style={{
+                  fontFamily: "var(--font-fraunces)",
+                  fontWeight: 900,
+                  fontSize: "clamp(28px, 4vw, 44px)",
+                  letterSpacing: "-0.04em",
+                  color: "var(--text)",
+                }}
+              >
+                {value}
+                {suffix && (
+                  <span style={{ color: "var(--accent)" }}>{suffix}</span>
+                )}
+              </p>
+              <p
+                className="mt-1 text-xs font-semibold uppercase tracking-widest"
+                style={{ color: "var(--text-3)" }}
+              >
+                {label}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Featured grid */}
-      <main className="max-w-7xl mx-auto px-4 py-10">
+      <main className="max-w-7xl mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Recent Highlights</h2>
+          <h2
+            className="text-xl tracking-tight"
+            style={{
+              fontFamily: "var(--font-fraunces)",
+              fontWeight: 700,
+              color: "var(--text)",
+            }}
+          >
+            Recent Highlights
+          </h2>
           <Link
             href="/gallery"
-            className="text-sm text-blue-600 font-medium hover:underline"
+            className="text-sm font-semibold hover:opacity-80 transition-opacity"
+            style={{ color: "var(--accent)" }}
           >
             View all →
           </Link>
