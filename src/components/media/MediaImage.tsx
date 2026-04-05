@@ -1,21 +1,21 @@
 /**
- * MediaImage — wraps next/image with Cloudflare Images transforms.
+ * MediaImage — wraps next/image with Cloudinary transforms.
  *
  * WHY: next/image handles lazy-loading, blur placeholders, and srcSet.
- * We inject Cloudflare's transform URL so the CDN resizes on the fly —
- * no need to pre-generate thumbnails.
+ * We inject Cloudinary's transform URL so the CDN resizes on the fly —
+ * no need to pre-generate thumbnails. Cloudinary picks webp/avif per browser.
  */
 
 import Image from "next/image";
-import { cfImageUrl } from "@/lib/cloudflare";
+import { cloudinaryImageUrl } from "@/lib/cloudinary";
 import type { MediaAsset } from "@/types/media";
 
 interface MediaImageProps {
   asset: MediaAsset;
-  /** Render width in px — used for Cloudflare transform + next/image sizing */
+  /** Render width in px — drives Cloudinary transform + next/image sizing */
   displayWidth?: number;
   className?: string;
-  /** Load eagerly (above the fold) */
+  /** Load eagerly (above the fold — first 6 assets) */
   priority?: boolean;
 }
 
@@ -25,12 +25,10 @@ export function MediaImage({
   className,
   priority = false,
 }: MediaImageProps) {
-  if (!asset.cfImageId) return null;
-
-  const src = cfImageUrl(asset.cfImageId, {
+  const src = cloudinaryImageUrl(asset.cloudinaryPublicId, {
     width: displayWidth,
     format: "auto",
-    quality: 85,
+    quality: "auto",
   });
 
   const aspectRatio = asset.height / asset.width;

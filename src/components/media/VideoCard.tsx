@@ -1,12 +1,11 @@
 /**
- * VideoCard — plays R2-hosted videos inline.
+ * VideoCard — plays Cloudinary-hosted videos inline.
  *
- * WHY preload="none": We have 40+ assets on the page.
- * Preloading all videos would destroy load performance.
- * Videos only load when the user clicks play.
+ * WHY preload="none": With 40+ assets on the page, preloading all videos
+ * would destroy load performance. Videos only load when the user clicks play.
  */
 
-import { r2VideoUrl } from "@/lib/cloudflare";
+import { cloudinaryVideoUrl } from "@/lib/cloudinary";
 import type { MediaAsset } from "@/types/media";
 
 interface VideoCardProps {
@@ -15,9 +14,7 @@ interface VideoCardProps {
 }
 
 export function VideoCard({ asset, className }: VideoCardProps) {
-  if (!asset.r2Key) return null;
-
-  const src = r2VideoUrl(asset.r2Key);
+  const src = cloudinaryVideoUrl(asset.cloudinaryPublicId);
 
   return (
     <div className={className}>

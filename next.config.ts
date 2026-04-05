@@ -2,21 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Cloudflare Images delivers from imagedelivery.net
+    // Cloudinary delivers all images from res.cloudinary.com
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "imagedelivery.net",
+        hostname: "res.cloudinary.com",
         pathname: "/**",
       },
     ],
-    // Let Cloudflare handle format negotiation — disable Next.js built-in optimizer
-    // so we don't pay for double-processing
-    unoptimized: false,
-    // Serve modern formats — browsers that support avif/webp get them automatically
+    // Cloudinary handles format negotiation (f_auto) — Next.js optimizer
+    // sits on top and adds srcSet for responsive sizing
     formats: ["image/avif", "image/webp"],
   },
-  // Security headers — required for Cloudflare Pages deployment
+  // Security headers
   async headers() {
     return [
       {
@@ -28,7 +26,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Aggressive caching for media assets served through /api/media or static
         source: "/media/(.*)",
         headers: [
           {
