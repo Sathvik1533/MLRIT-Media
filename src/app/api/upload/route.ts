@@ -1,56 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { cacheInvalidatePattern } from "@/lib/redis";
+
+const VALID_CATEGORIES = ["events", "campus", "sports", "academics", "cultural", "technical"];
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const file = formData.get("file") as File;
-    const sizeCategory = formData.get("sizeCategory") as string;
+    const { title, category, publicId, type } = await request.json();
 
-    if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    if (!title || !category || !publicId || !type) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+    if (!VALID_CATEGORIES.includes(category)) {
+      return NextResponse.json({ error: "Invalid category" }, { status: 400 });
+    }
+    if (type !== "image" && type !== "video") {
+      return NextResponse.json({ error: "type must be image or video" }, { status: 400 });
     }
 
-    // Upload to Cloudinary
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
-    
-    const uploadFormData = new FormData();
-    uploadFormData.append("file", file);
-    uploadFormData.append("upload_preset", "ml_default"); // You may need to create this in Cloudinary
-    uploadFormData.append("folder", "test-lab");
-
-    const uploadResponse = await fetch(cloudinaryUrl, {
-      method: "POST",
-      body: uploadFormData,
-    });
-
-    const uploadData = await uploadResponse.json();
-
-    // Store in database
     const media = await prisma.media.create({
       data: {
-        title: `Test ${sizeCategory} ${file.type.startsWith("video") ? "video" : "image"}`,
-        description: `Performance test asset - ${sizeCategory}`,
-        type: file.type.startsWith("video") ? "video" : "image",
-        category: "technical",
-        cloudinaryPublicId: uploadData.public_id,
-        thumbnailUrl: uploadData.secure_url,
-        duration: uploadData.duration || null,
+        title: title.trim(),
+        category,
+        cloudinaryPublicId: publicId,
+        type,
+        tags: JSON.stringify([category]),
       },
     });
 
-    return NextResponse.json({
-      id: media.id,
-      publicId: uploadData.public_id,
-      url: uploadData.secure_url,
-      type: media.type,
-      size: sizeCategory,
-    });
-  } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json(
-      { error: "Upload failed" },
-      { status: 500 }
-    );
+    await Promise.all([
+      cacheInvalidatePattern("media:*"),
+      cacheInvalidatePattern("assets:*"),
+    ]);
+
+    return NextResponse.json({ success: true, id: media.id });
+  } catch (error: any) {
+    if (error?.code === "P2002") {
+      return NextResponse.json({ error: "File already uploaded" }, { status: 409 });
+    }
+    console.error("Upload API error:", error);
+    return NextResponse.json({ error: "Failed to save media" }, { status: 500 });
   }
 }
