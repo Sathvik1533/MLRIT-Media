@@ -24,11 +24,16 @@ export interface MediaAsset {
   width: number;
   /** Height in pixels of the original file */
   height: number;
+  /** Pre-computed Cloudinary thumbnail URL (400px wide) */
+  thumbnailUrl?: string;
+  /** Pre-computed full-quality Cloudinary URL */
+  fullUrl?: string;
   /** Base64 blur placeholder (tiny 4x4 px) — optional */
   blurDataURL?: string;
   /** ISO date string e.g. "2024-10-15" */
   capturedAt: string;
   tags?: string[];
+  views: number;
 }
 
 export interface MediaGalleryFilter {
