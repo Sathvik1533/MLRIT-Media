@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
             }
           : {}),
       },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     });
 
     assets = rows.map(toMediaAsset);
