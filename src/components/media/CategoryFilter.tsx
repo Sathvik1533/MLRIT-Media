@@ -1,5 +1,13 @@
 "use client";
 
+/**
+ * CategoryFilter — pill-style filter bar for media categories.
+ *
+ * WHY "use client": filter state lives in the browser (URL search params).
+ * The media grid itself is still a server component — we only hydrate this
+ * small interactive piece. This keeps the JS bundle minimal.
+ */
+
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import type { MediaCategory, MediaType } from "@/types/media";
@@ -30,40 +38,43 @@ export function CategoryFilter() {
   const setParam = useCallback(
     (key: string, value: string | null) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value) params.set(key, value);
-      else params.delete(key);
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
     },
     [router, pathname, searchParams]
   );
 
+  const toggleCategory = (value: MediaCategory) => {
+    setParam("category", activeCategory === value ? null : value);
+  };
+
+  const toggleType = (value: MediaType) => {
+    setParam("type", activeType === value ? null : value);
+  };
+
   return (
     <div className="space-y-3 mb-8">
+      {/* Search */}
       <input
         type="search"
         placeholder="Search photos and videos..."
         defaultValue={search}
         onChange={(e) => setParam("q", e.target.value || null)}
-        className="w-full max-w-sm px-4 py-2 rounded-full text-sm outline-none transition-all"
-        style={{
-          background: "var(--surface-2)",
-          border: "1px solid var(--border)",
-          color: "var(--text)",
-        }}
+        className="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black"
         aria-label="Search media"
       />
 
+      {/* Type toggle */}
       <div className="flex gap-2">
         {TYPES.map(({ label, value }) => (
           <button
             key={value}
-            onClick={() => setParam("type", activeType === value ? null : value)}
-            className="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide transition-all duration-150"
-            style={
-              activeType === value
-                ? { background: "var(--accent)", color: "#0a0a0a" }
-                : { border: "1px solid var(--border)", color: "var(--text-2)" }
-            }
+            onClick={() => toggleType(value)}
+            className={pill(activeType === value)}
             aria-pressed={activeType === value}
           >
             {label}
@@ -71,15 +82,11 @@ export function CategoryFilter() {
         ))}
       </div>
 
+      {/* Category pills */}
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setParam("category", null)}
-          className="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide transition-all duration-150"
-          style={
-            !activeCategory
-              ? { background: "var(--accent)", color: "#0a0a0a" }
-              : { border: "1px solid var(--border)", color: "var(--text-2)" }
-          }
+          className={pill(!activeCategory)}
           aria-pressed={!activeCategory}
         >
           All
@@ -87,13 +94,8 @@ export function CategoryFilter() {
         {CATEGORIES.map(({ label, value }) => (
           <button
             key={value}
-            onClick={() => setParam("category", activeCategory === value ? null : value)}
-            className="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide transition-all duration-150"
-            style={
-              activeCategory === value
-                ? { background: "var(--accent)", color: "#0a0a0a" }
-                : { border: "1px solid var(--border)", color: "var(--text-2)" }
-            }
+            onClick={() => toggleCategory(value)}
+            className={pill(activeCategory === value)}
             aria-pressed={activeCategory === value}
           >
             {label}
@@ -102,4 +104,12 @@ export function CategoryFilter() {
       </div>
     </div>
   );
+}
+
+function pill(active: boolean): string {
+  const base =
+    "px-3 py-1 rounded-full text-sm font-medium transition-colors cursor-pointer";
+  return active
+    ? `${base} bg-black text-white`
+    : `${base} bg-gray-100 text-gray-700 hover:bg-gray-200`;
 }

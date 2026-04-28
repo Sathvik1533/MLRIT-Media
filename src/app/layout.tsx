@@ -1,36 +1,53 @@
 import type { Metadata } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
-import { Navbar } from "@/components/ui/Navbar";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  variable: "--font-jakarta",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "MLRIT Media — Campus Life, Events & More",
-  description:
-    "Official media gallery of MLRIT — photos and videos from campus events, sports, cultural fests, and academics.",
+  title: "MLRIT Zero-Lag Media Architecture",
+  description: "Performance-aware media system with real-time optimization",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${jakarta.variable} h-full`}>
-      <body className="min-h-full flex flex-col font-sans" style={{ background: "var(--bg)", color: "var(--text)" }}>
-        <Navbar />
-        <div className="flex-1">{children}</div>
-        <footer className="py-6 text-center text-sm" style={{ borderTop: "1px solid var(--border)", color: "var(--text-3)" }}>
-          MLRIT Media — {new Date().getFullYear()}
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col">
+        <nav className="bg-slate-900 text-white border-b border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <a href="/" className="text-2xl font-bold">
+                <span className="text-blue-400">MLRIT</span> Media
+              </a>
+              <div className="flex gap-6">
+                <a href="/" className="hover:text-blue-400 transition-colors">Home</a>
+                <a href="/gallery" className="hover:text-blue-400 transition-colors">Gallery</a>
+                <a href="/videos" className="hover:text-blue-400 transition-colors">Videos</a>
+                <a href="/test-lab" className="hover:text-green-400 transition-colors font-semibold">⚡ Test Lab</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+        {children}
+        <footer className="bg-slate-900 text-white mt-auto py-6 border-t border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 text-center text-slate-400">
+            MLRIT Zero-Lag Architecture — {new Date().getFullYear()}
+          </div>
         </footer>
       </body>
     </html>

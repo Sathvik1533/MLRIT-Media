@@ -56,3 +56,27 @@ function buildTransforms(opts: ImageTransformOptions): string {
   if (opts.fit) parts.push(`c_${opts.fit}`);
   return parts.join(",");
 }
+
+/**
+ * Get optimized thumbnail URL
+ */
+export function getThumbnailUrl(publicId: string, size: number = 400): string {
+  return cloudinaryImageUrl(publicId, {
+    width: size,
+    height: size,
+    fit: "fill",
+    quality: "auto",
+    format: "auto",
+  });
+}
+
+/**
+ * Get full-size optimized URL
+ */
+export function getFullSizeUrl(publicId: string): string {
+  return cloudinaryImageUrl(publicId, {
+    width: 1920,
+    quality: "auto",
+    format: "auto",
+  });
+}

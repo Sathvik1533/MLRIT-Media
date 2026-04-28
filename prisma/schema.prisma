@@ -1,0 +1,28 @@
+// Prisma schema for MLRIT Media Gallery
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Media {
+  id                  String   @id @default(cuid())
+  title               String
+  description         String?
+  type                String   // "image" or "video"
+  category            String   // "events", "campus", "sports", "academics", "cultural", "technical"
+  cloudinaryPublicId  String   @unique
+  cloudflareId        String?
+  thumbnailUrl        String?
+  duration            Int?     // video duration in seconds
+  views               Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([category])
+  @@index([type])
+}

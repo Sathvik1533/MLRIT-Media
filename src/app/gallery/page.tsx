@@ -1,54 +1,52 @@
+/**
+ * Gallery page — Server Component shell.
+ *
+ * WHY keep this as a server component?
+ *   - Metadata (title, description for Google) runs on the server
+ *   - The page URL + shell renders instantly (no JS needed for the frame)
+ *   - GalleryClient handles the live data fetch
+ *
+ * The CategoryFilter and GalleryClient both need to read URL search params.
+ * Both must be in Suspense because useSearchParams() can suspend during
+ * Next.js route transitions.
+ */
+
 import { Suspense } from "react";
-import { MediaGrid } from "@/components/media/MediaGrid";
 import { CategoryFilter } from "@/components/media/CategoryFilter";
-import { MEDIA_ASSETS } from "@/lib/media";
-import type { MediaCategory, MediaType } from "@/types/media";
+import { GalleryClient } from "./GalleryClient";
+import { MediaGridSkeleton } from "@/components/ui/Skeleton";
 
 export const metadata = {
   title: "Gallery — MLRIT Media",
   description: "Photos and videos from MLRIT events, campus, and activities",
 };
 
-interface GalleryPageProps {
-  searchParams: Promise<{
-    category?: string;
-    type?: string;
-    q?: string;
-  }>;
-}
-
-export default async function GalleryPage({ searchParams }: GalleryPageProps) {
-  const { category, type, q } = await searchParams;
-
-  const filter = {
-    category: category as MediaCategory | undefined,
-    type: type as MediaType | undefined,
-    search: q,
-  };
-
+export default function GalleryPage() {
   return (
-    <main className="max-w-7xl mx-auto px-6 py-10">
+    <main className="max-w-7xl mx-auto px-6 py-10 pb-16">
       <h1
-        className="leading-none tracking-tight mb-1"
+        className="leading-none mb-4"
         style={{
-          fontFamily: "var(--font-fraunces)",
-          fontWeight: 900,
-          fontSize: "clamp(32px, 5vw, 52px)",
+          fontFamily: "var(--font-geist)",
+          fontWeight: 800,
+          fontSize: "clamp(32px, 4vw, 48px)",
           letterSpacing: "-0.04em",
+          lineHeight: 1.1,
           color: "var(--text)",
         }}
       >
         Gallery
       </h1>
-      <p className="mb-8 text-sm" style={{ color: "var(--text-3)" }}>
-        {MEDIA_ASSETS.length} photos &amp; videos
-      </p>
 
+      {/* CategoryFilter reads URL params — must be in Suspense */}
       <Suspense fallback={<div className="h-20" />}>
         <CategoryFilter />
       </Suspense>
 
-      <MediaGrid assets={MEDIA_ASSETS} filter={filter} />
+      {/* GalleryClient fetches live data + shows HUD */}
+      <Suspense fallback={<><p className="mb-8 text-sm" style={{ color: "var(--text-3)" }}>Loading…</p><MediaGridSkeleton /></>}>
+        <GalleryClient />
+      </Suspense>
     </main>
   );
 }
