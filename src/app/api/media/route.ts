@@ -20,6 +20,10 @@ import { cacheGet, cacheSet } from "@/lib/redis";
 import { logRequest } from "@/app/api/stats/route";
 import type { MediaCategory, MediaType } from "@/types/media";
 
+const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
+const IMG_BASE = `https://res.cloudinary.com/${CLOUD}/image/upload`;
+const VID_BASE = `https://res.cloudinary.com/${CLOUD}/video/upload`;
+
 // Transform a DB row to the MediaAsset shape the UI expects
 function toMediaAsset(row: {
   id: string;
@@ -32,6 +36,21 @@ function toMediaAsset(row: {
   views: number;
   createdAt: Date;
 }) {
+  const isVideo = row.type === "video";
+  const thumbnailUrl = isVideo
+    ? `${VID_BASE}/w_400,h_225,c_fill,f_jpg,q_auto/${row.cloudinaryPublicId}`
+    : `${IMG_BASE}/w_400,h_300,c_fill,f_auto,q_auto/${row.cloudinaryPublicId}`;
+  const fullUrl = isVideo
+    ? `${VID_BASE}/${row.cloudinaryPublicId}`
+    : `${IMG_BASE}/f_auto,q_auto/${row.cloudinaryPublicId}`;
+
+  let tags: string[] = [];
+  try {
+    tags = JSON.parse(row.tags) as string[];
+  } catch {
+    tags = [];
+  }
+
   return {
     id: row.id,
     cloudinaryPublicId: row.cloudinaryPublicId,
@@ -39,10 +58,11 @@ function toMediaAsset(row: {
     description: row.description ?? undefined,
     category: row.category as MediaCategory,
     type: row.type as MediaType,
-    tags: JSON.parse(row.tags) as string[],
-    // Default dimensions — images are 16:9, videos are 16:9 480p
-    width: row.type === "video" ? 854 : 1920,
-    height: row.type === "video" ? 480 : 1080,
+    tags,
+    thumbnailUrl,
+    fullUrl,
+    width: isVideo ? 854 : 1920,
+    height: isVideo ? 480 : 1080,
     capturedAt: row.createdAt.toISOString().split("T")[0],
     views: row.views,
   };
