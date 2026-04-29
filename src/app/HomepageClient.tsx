@@ -189,15 +189,16 @@ function SectionHeader({
   accent?: string;
 }) {
   return (
-    <div style={{ marginBottom: 64 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+    <div style={{ marginBottom: 40 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
         <span
           style={{
-            width: 5,
-            height: 5,
+            width: 6,
+            height: 6,
             borderRadius: "50%",
             background: accent,
-            boxShadow: `0 0 5px ${accent}80`,
+            boxShadow: `0 0 8px ${accent}90`,
+            flexShrink: 0,
             display: "inline-block",
           }}
         />
@@ -205,10 +206,10 @@ function SectionHeader({
           style={{
             fontSize: 10,
             fontFamily: "var(--font-geist-mono)",
-            color: "var(--text-2)",
+            color: accent,
             textTransform: "uppercase",
-            letterSpacing: "0.16em",
-            fontWeight: 600,
+            letterSpacing: "0.18em",
+            fontWeight: 700,
           }}
         >
           {overline}
@@ -216,30 +217,16 @@ function SectionHeader({
       </div>
       <h2
         style={{
-          fontSize: "clamp(28px, 3.2vw, 40px)",
-          fontWeight: 700,
+          fontSize: "clamp(30px, 3.5vw, 44px)",
+          fontWeight: 800,
           color: "var(--text)",
-          letterSpacing: "-0.03em",
-          lineHeight: 1.1,
+          letterSpacing: "-0.035em",
+          lineHeight: 1.08,
         }}
       >
         {heading}
       </h2>
     </div>
-  );
-}
-
-// ── Divider ────────────────────────────────────────────────────────────────────
-
-function Divider({ color = "rgba(37,99,235,0.2)" }: { color?: string }) {
-  return (
-    <div
-      style={{
-        height: 1,
-        background: `linear-gradient(90deg, transparent 0%, ${color} 50%, transparent 100%)`,
-        marginInline: 48,
-      }}
-    />
   );
 }
 
@@ -276,7 +263,7 @@ function LivePanel() {
         borderRadius: 12,
         background: "var(--surface)",
         border: "1px solid var(--border)",
-        borderTop: "2px solid rgba(37,99,235,0.55)",
+        borderTop: "3px solid rgba(37,99,235,0.7)",
         boxShadow: "0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",
         overflow: "hidden",
         width: "100%",
@@ -470,20 +457,21 @@ function MetricsStrip() {
 
   return (
     <div
-      className="grid grid-cols-2 lg:grid-cols-4"
       style={{
         borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
         background: "var(--surface)",
-        boxShadow: "0 1px 0 rgba(0,0,0,0.04)",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
       }}
     >
+      <div className="grid grid-cols-2 lg:grid-cols-4" style={{ maxWidth: 1200, margin: "0 auto" }}>
       {metrics.map(({ label, value, color, sub, accent }, i) => (
         <div
           key={label}
           style={{
             padding: "24px 32px",
             borderRight: i < 3 ? "1px solid var(--border)" : undefined,
-            borderLeft: `3px solid ${accent}`,
+            borderLeft: `4px solid ${accent}`,
           }}
         >
           <div
@@ -520,6 +508,7 @@ function MetricsStrip() {
           </div>
         </div>
       ))}
+      </div>
     </div>
   );
 }
@@ -542,7 +531,7 @@ function PipelineCard({ step, icon, isLast }: { step: (typeof PIPELINE_STEPS)[nu
           background: hovered ? "var(--surface-2)" : "var(--surface)",
           border: `1px solid ${hovered ? step.accent + "35" : "var(--border)"}`,
           borderTop: `2px solid ${hovered ? step.accent + "cc" : step.accent + "60"}`,
-          boxShadow: hovered ? `0 8px 32px ${step.accent}14` : "0 1px 4px rgba(0,0,0,0.04)",
+          boxShadow: hovered ? `0 8px 32px ${step.accent}20` : "0 2px 12px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)",
           transition: "all 220ms ease",
           textDecoration: "none",
           display: "flex",
@@ -639,7 +628,7 @@ function CapabilityCard({ cap, icon }: { cap: (typeof CAPABILITIES)[number]; ico
         padding: "32px 24px",
         background: "var(--surface)",
         border: `1px solid ${hovered ? cap.accent + "35" : "var(--border)"}`,
-        boxShadow: hovered ? `0 12px 48px ${cap.accent}12, 0 2px 8px rgba(0,0,0,0.04)` : "0 1px 4px rgba(0,0,0,0.04)",
+        boxShadow: hovered ? `0 16px 48px ${cap.accent}1a, 0 4px 16px rgba(0,0,0,0.08)` : "0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
         transition: "all 260ms ease",
         transform: hovered ? "translateY(-3px)" : "translateY(0)",
         display: "flex",
@@ -659,7 +648,7 @@ function CapabilityCard({ cap, icon }: { cap: (typeof CAPABILITIES)[number]; ico
           borderRadius: "50%",
           background: cap.accent + "0e",
           filter: "blur(60px)",
-          opacity: hovered ? 1 : 0.4,
+          opacity: hovered ? 1 : 0.65,
           transition: "opacity 400ms",
           pointerEvents: "none",
         }}
@@ -746,7 +735,7 @@ function AssetCard({ item }: { item: MediaItem }) {
         border: `1px solid ${hovered ? accent + "30" : "var(--border)"}`,
         transition: "all 220ms ease",
         transform: hovered ? "translateY(-2px)" : "translateY(0)",
-        boxShadow: hovered ? `0 8px 24px ${accent}0c, 0 2px 8px rgba(0,0,0,0.06)` : "0 1px 4px rgba(0,0,0,0.04)",
+        boxShadow: hovered ? `0 8px 24px ${accent}18, 0 2px 8px rgba(0,0,0,0.08)` : "0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)",
         background: "var(--surface)",
         cursor: "pointer",
       }}
@@ -908,9 +897,6 @@ export function HomepageClient() {
       <section
         style={{
           position: "relative",
-          minHeight: "calc(100vh - 52px)",
-          display: "flex",
-          alignItems: "center",
           overflow: "hidden",
         }}
       >
@@ -919,7 +905,7 @@ export function HomepageClient() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
             maskImage: "radial-gradient(ellipse 85% 85% at 50% 50%, black 20%, transparent 100%)",
             WebkitMaskImage: "radial-gradient(ellipse 85% 85% at 50% 50%, black 20%, transparent 100%)",
@@ -931,7 +917,7 @@ export function HomepageClient() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "radial-gradient(ellipse 50% 50% at 60% 30%, rgba(37,99,235,0.07) 0%, transparent 60%)",
+            background: "radial-gradient(ellipse 55% 55% at 60% 30%, rgba(37,99,235,0.11) 0%, transparent 65%)",
             pointerEvents: "none",
           }}
         />
@@ -951,15 +937,15 @@ export function HomepageClient() {
         <div
           className="grid grid-cols-1 lg:grid-cols-[1fr_auto] items-center"
           style={{
-            maxWidth: 1320,
+            maxWidth: 1200,
             margin: "0 auto",
-            padding: "96px 48px 108px",
+            padding: "88px 48px 80px",
             width: "100%",
             gap: 72,
           }}
         >
           {/* ── Copy ── */}
-          <div style={{ maxWidth: 600 }}>
+          <div style={{ maxWidth: 660 }}>
             {/* Status badge */}
             <div
               style={{
@@ -999,7 +985,7 @@ export function HomepageClient() {
             {/* Headline */}
             <h1
               style={{
-                fontSize: "clamp(44px, 6vw, 76px)",
+                fontSize: "clamp(48px, 6.5vw, 84px)",
                 fontWeight: 800,
                 lineHeight: 1.02,
                 letterSpacing: "-0.045em",
@@ -1167,8 +1153,6 @@ export function HomepageClient() {
       {/* ═══════════════════════════════════════════════════════════════════ */}
       <MetricsStrip />
 
-      <Divider color="rgba(37,99,235,0.2)" />
-
       {/* ═══════════════════════════════════════════════════════════════════ */}
       {/* PIPELINE                                                           */}
       {/* ═══════════════════════════════════════════════════════════════════ */}
@@ -1176,10 +1160,10 @@ export function HomepageClient() {
         style={{
           background: "var(--surface-2)",
           borderTop: "1px solid var(--border)",
-          padding: "88px 48px",
+          padding: "72px 0",
         }}
       >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
           <SectionHeader overline="How it works" heading="The pipeline" accent="#2563eb" />
 
           <div style={{ display: "flex", gap: 0, alignItems: "stretch", flexWrap: "wrap" }}>
@@ -1190,24 +1174,18 @@ export function HomepageClient() {
         </div>
       </section>
 
-      <Divider color="rgba(37,99,235,0.16)" />
-
       {/* ═══════════════════════════════════════════════════════════════════ */}
       {/* CAPABILITIES                                                       */}
       {/* ═══════════════════════════════════════════════════════════════════ */}
-      <section
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          padding: "104px 48px",
-        }}
-      >
-        <SectionHeader overline="Platform features" heading="Built for every stage" accent="#7c3aed" />
+      <section style={{ borderTop: "1px solid var(--border)", padding: "72px 0" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
+          <SectionHeader overline="Platform features" heading="Built for every stage" accent="#7c3aed" />
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-          {CAPABILITIES.map((cap, i) => (
-            <CapabilityCard key={cap.id} cap={cap} icon={CAPABILITY_ICONS[i]} />
-          ))}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+            {CAPABILITIES.map((cap, i) => (
+              <CapabilityCard key={cap.id} cap={cap} icon={CAPABILITY_ICONS[i]} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -1218,10 +1196,10 @@ export function HomepageClient() {
         style={{
           background: "var(--surface-2)",
           borderTop: "1px solid var(--border)",
-          padding: "104px 48px",
+          padding: "72px 0",
         }}
       >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 52 }}>
             <SectionHeader overline="Verified & CDN-optimized" heading="Asset Library" accent="#059669" />
 
@@ -1253,19 +1231,17 @@ export function HomepageClient() {
         </div>
       </section>
 
-      <Divider color="rgba(5,150,105,0.2)" />
-
       {/* ═══════════════════════════════════════════════════════════════════ */}
       {/* FOOTER                                                             */}
       {/* ═══════════════════════════════════════════════════════════════════ */}
       <footer
         style={{
           borderTop: "1px solid var(--border)",
-          padding: "60px 48px 40px",
+          padding: "56px 0 40px",
           background: "var(--surface)",
         }}
       >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 48px" }}>
           <div
             style={{
               display: "grid",
