@@ -1,54 +1,31 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Navbar } from "@/components/ui/Navbar";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geist = Geist({
   subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "MLRIT Zero-Lag Media Architecture",
-  description: "Performance-aware media system with real-time optimization",
+  title: "Media Performance Observatory — MLRIT",
+  description: "Real-time CDN performance benchmarking, Redis cache analysis, and media optimization platform.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <nav className="bg-slate-900 text-white border-b border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <a href="/" className="text-2xl font-bold">
-                <span className="text-blue-400">MLRIT</span> Media
-              </a>
-              <div className="flex gap-6">
-                <a href="/" className="hover:text-blue-400 transition-colors">Home</a>
-                <a href="/gallery" className="hover:text-blue-400 transition-colors">Gallery</a>
-                <a href="/videos" className="hover:text-blue-400 transition-colors">Videos</a>
-                <a href="/test-lab" className="hover:text-green-400 transition-colors font-semibold">⚡ Test Lab</a>
-              </div>
-            </div>
-          </div>
-        </nav>
-        {children}
-        <footer className="bg-slate-900 text-white mt-auto py-6 border-t border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 text-center text-slate-400">
-            MLRIT Zero-Lag Architecture — {new Date().getFullYear()}
-          </div>
-        </footer>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} h-full`} suppressHydrationWarning>
+      <body className="min-h-full flex flex-col" style={{ background: "var(--bg)", color: "var(--text)", fontFamily: "var(--font-geist), system-ui, sans-serif" }}>
+        <Navbar />
+        <div className="flex-1">{children}</div>
       </body>
     </html>
   );
