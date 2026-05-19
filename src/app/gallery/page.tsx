@@ -11,14 +11,15 @@
  * Next.js route transitions.
  */
 
+import { tenant } from "@/config/tenant";
 import { Suspense } from "react";
 import { CategoryFilter } from "@/components/media/CategoryFilter";
 import { GalleryClient } from "./GalleryClient";
 import { MediaGridSkeleton } from "@/components/ui/Skeleton";
 
 export const metadata = {
-  title: "Gallery — MLRIT Media",
-  description: "Photos and videos from MLRIT events, campus, and activities",
+  title: `Gallery — ${tenant.shortName} Media`,
+  description: `Photos and videos from ${tenant.shortName} events, campus, and activities`,
 };
 
 export default function GalleryPage() {

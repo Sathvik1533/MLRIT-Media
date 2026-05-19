@@ -1,0 +1,242 @@
+[
+  {
+    "publicId": "mlrit/campus-main-banner",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2024/04/mlrit.jpg",
+    "title": "MLRIT Main Campus",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-2025-banner",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2025/09/website-1.jpg",
+    "title": "Campus Life 2025",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-hostel",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/hostel.jpg",
+    "title": "Hostel Block",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-freshers",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/05/Freshman.jpg",
+    "title": "Freshers Orientation",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-web-banner",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/02/banner.jpg",
+    "title": "College Campus Overview",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-banner-2024",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2024/07/Top-Placement-scaled-1920x677.jpg",
+    "title": "Top Placement Campus",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/events-convocation-banner",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2025/07/website-cong.jpg",
+    "title": "Convocation Ceremony 2025",
+    "category": "events"
+  },
+  {
+    "publicId": "mlrit/events-graduation",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/Grad12.jpeg",
+    "title": "Graduation Day",
+    "category": "events"
+  },
+  {
+    "publicId": "mlrit/events-mou-signing",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/MOU.jpg",
+    "title": "MOU Signing Ceremony",
+    "category": "events"
+  },
+  {
+    "publicId": "mlrit/events-achievements",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/05/achive-promotions.jpeg",
+    "title": "Student Achievements",
+    "category": "events"
+  },
+  {
+    "publicId": "mlrit/events-annual-day",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2025/08/4.jpg",
+    "title": "Annual Day Celebration",
+    "category": "events"
+  },
+  {
+    "publicId": "mlrit/events-entrepreneurship",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/sb-instagram-feed-images/684650414_18325496653266945_816966746837841987_n.heicfull.webp",
+    "title": "Entrepreneurship & Design Thinking Summit",
+    "category": "events"
+  },
+  {
+    "publicId": "mlrit/sports-basketball-1",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/basket-ball-1.jpg",
+    "title": "Basketball Championship",
+    "category": "sports"
+  },
+  {
+    "publicId": "mlrit/sports-basketball-2",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/basket-ball.jpg",
+    "title": "Basketball Tournament",
+    "category": "sports"
+  },
+  {
+    "publicId": "mlrit/sports-badminton",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/BADMINTON.jpg",
+    "title": "Badminton Championship",
+    "category": "sports"
+  },
+  {
+    "publicId": "mlrit/sports-football",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/football.jpg",
+    "title": "Football Tournament",
+    "category": "sports"
+  },
+  {
+    "publicId": "mlrit/sports-promo",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/05/sports-promotion.jpeg",
+    "title": "Sports at MLRIT",
+    "category": "sports"
+  },
+  {
+    "publicId": "mlrit/sports-badminton-player",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/sb-instagram-feed-images/515319741_18286940341266945_7928035252321680487_nlow.webp",
+    "title": "Badminton Star Player",
+    "category": "sports"
+  },
+  {
+    "publicId": "mlrit/academics-cse",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/05/CSE.jpg",
+    "title": "Computer Science Department",
+    "category": "academics"
+  },
+  {
+    "publicId": "mlrit/academics-ece",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/05/ECE.jpg",
+    "title": "Electronics & Communication Dept",
+    "category": "academics"
+  },
+  {
+    "publicId": "mlrit/academics-ece-students",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/ece-students.jpg",
+    "title": "ECE Students in Lab",
+    "category": "academics"
+  },
+  {
+    "publicId": "mlrit/academics-cse-aiml",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/cse-aiml.jpg",
+    "title": "CSE AI/ML Programme",
+    "category": "academics"
+  },
+  {
+    "publicId": "mlrit/academics-certificates",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/certificates-1.jpg",
+    "title": "Student Certifications",
+    "category": "academics"
+  },
+  {
+    "publicId": "mlrit/academics-faculty",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/Faculty-achievement.png",
+    "title": "Faculty Achievements",
+    "category": "academics"
+  },
+  {
+    "publicId": "mlrit/technical-aero-drone",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/mlrit-aero-drone.jpg",
+    "title": "Aero Club Drone Build",
+    "category": "technical"
+  },
+  {
+    "publicId": "mlrit/technical-astro",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/astro.jpg",
+    "title": "Astronomy Club Session",
+    "category": "technical"
+  },
+  {
+    "publicId": "mlrit/technical-clapinn",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/clapinn-success.jpg",
+    "title": "Clapinn Startup Success",
+    "category": "technical"
+  },
+  {
+    "publicId": "mlrit/technical-aero-dept",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/05/Aero.jpg",
+    "title": "Aeronautical Engineering",
+    "category": "technical"
+  },
+  {
+    "publicId": "mlrit/technical-cisco",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/MLRit-cisco.jpg",
+    "title": "Cisco Networking Lab",
+    "category": "technical"
+  },
+  {
+    "publicId": "mlrit/cultural-adfilms",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/ADfilms.jpeg",
+    "title": "AD Films Club",
+    "category": "cultural"
+  },
+  {
+    "publicId": "mlrit/cultural-literati",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/sb-instagram-feed-images/500325406_18282444625266945_6879949381965104879_nlow.webp",
+    "title": "Club Literati",
+    "category": "cultural"
+  },
+  {
+    "publicId": "mlrit/cultural-scope-club",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/sb-instagram-feed-images/498208979_18281682805266945_6094395211543814598_nlow.webp",
+    "title": "SCOPE Coding Club",
+    "category": "cultural"
+  },
+  {
+    "publicId": "mlrit/cultural-dance",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/sb-instagram-feed-images/515775871_18287476399266945_8736212408787466144_nlow.webp",
+    "title": "Dance Performance",
+    "category": "cultural"
+  },
+  {
+    "publicId": "mlrit/cultural-power-bridge",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/08/POWER-BRIDGE.jpg",
+    "title": "Power Bridge Project",
+    "category": "cultural"
+  },
+  {
+    "publicId": "mlrit/campus-cie-gallery-1",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/04/cie-gallery-1.jpg",
+    "title": "Innovation Cell Lab",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-cie-gallery-2",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/04/cie-gallery-2.jpg",
+    "title": "CIE Workshop Space",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-cie-gallery-3",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/04/cie-gallery-3.jpg",
+    "title": "Centre for Innovation",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-cie-gallery-4",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/04/cie-gallery-4.jpg",
+    "title": "Startup Incubation Space",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/campus-cie-gallery-5",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/2022/04/cie-gallery-5.jpg",
+    "title": "CIE Mentoring Session",
+    "category": "campus"
+  },
+  {
+    "publicId": "mlrit/technical-ewb",
+    "remoteUrl": "https://mlrit.ac.in/wp-content/uploads/sb-instagram-feed-images/499243067_1370298484206466_6243792445989942414_nlow.webp",
+    "title": "Engineers Without Borders",
+    "category": "technical"
+  }
+]

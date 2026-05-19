@@ -47,3 +47,12 @@ next-env.d.ts
 # database files
 prisma/dev.db
 prisma/*.db
+# Added by code-review-graph
+.code-review-graph/
+
+# Tool logs and cache — never commit
+.gstack/
+.playwright-mcp/
+.mcp.json
+graphify-out/
+dev.db

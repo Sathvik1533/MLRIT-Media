@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { tenant } from "@/config/tenant";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -978,7 +979,7 @@ export function HomepageClient() {
                   fontWeight: 600,
                 }}
               >
-                MLRIT INTERNAL PLATFORM · LIVE
+                {tenant.shortName} INTERNAL PLATFORM · LIVE
               </span>
             </div>
 
@@ -1018,7 +1019,7 @@ export function HomepageClient() {
                 fontWeight: 400,
               }}
             >
-              The internal media asset performance pipeline for MLRIT. Upload,
+              The internal media asset performance pipeline for {tenant.shortName}. Upload,
               benchmark CDN delivery across 5 quality variants, and certify
               zero-lag performance — before anything goes live on the college
               website.
@@ -1254,7 +1255,7 @@ export function HomepageClient() {
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                 <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", letterSpacing: "-0.02em" }}>
-                  MLRIT
+                  {tenant.shortName}
                 </span>
                 <span
                   style={{
@@ -1274,7 +1275,7 @@ export function HomepageClient() {
               </div>
               <p style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.7, maxWidth: 270 }}>
                 Internal media asset performance pipeline. Upload, benchmark, and
-                certify assets before production deployment on mlrit.ac.in.
+                certify assets before production deployment on {tenant.websiteUrl.replace("https://", "")}.
               </p>
             </div>
 
@@ -1349,7 +1350,7 @@ export function HomepageClient() {
             }}
           >
             <span style={{ fontSize: 12, fontFamily: "var(--font-geist-mono)", color: "var(--text-3)" }}>
-              © 2026 MLRIT · Internal platform — not for public distribution
+              © 2026 {tenant.shortName} · Internal platform — not for public distribution
             </span>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { prisma } from "@/lib/db";
 import { cacheInvalidatePattern } from "@/lib/redis";
+import { requireAdmin } from "@/lib/auth";
 
 const CLOUD      = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
 const API_KEY    = process.env.CLOUDINARY_API_KEY!;
@@ -34,6 +35,8 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const denied = requireAdmin(_req);
+  if (denied) return denied;
   const { id } = await params;
   try {
     const media = await prisma.media.findUnique({ where: { id } });
@@ -55,14 +58,18 @@ export async function DELETE(
   }
 }
 
-// PATCH /api/assets/[id]  — body: { title?, category?, description? }
+const VALID_ROLES = ["hero", "banner", "thumbnail", "featured"];
+
+// PATCH /api/assets/[id]  — body: { title?, category?, description?, role? }
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const denied = requireAdmin(req);
+  if (denied) return denied;
   const { id } = await params;
   try {
-    const { title, category, description } = await req.json();
+    const { title, category, description, role } = await req.json();
     if (title !== undefined && typeof title !== "string") {
       return NextResponse.json({ success: false, error: "title must be a string" }, { status: 400 });
     }
@@ -75,10 +82,14 @@ export async function PATCH(
     if (description !== undefined && typeof description !== "string") {
       return NextResponse.json({ success: false, error: "description must be a string" }, { status: 400 });
     }
+    if (role !== undefined && role !== null && !VALID_ROLES.includes(role)) {
+      return NextResponse.json({ success: false, error: `role must be one of: ${VALID_ROLES.join(", ")}` }, { status: 400 });
+    }
     const data: Record<string, string | null> = {};
-    if (title)                   data.title       = title.trim();
-    if (category)                data.category    = category;
+    if (title)                     data.title       = title.trim();
+    if (category)                  data.category    = category;
     if (description !== undefined) data.description = description.trim() || null;
+    if (role !== undefined)        data.role        = role ?? null;
     if (!Object.keys(data).length) {
       return NextResponse.json({ success: false, error: "Nothing to update" }, { status: 400 });
     }

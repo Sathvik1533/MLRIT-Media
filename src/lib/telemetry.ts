@@ -1,11 +1,19 @@
 /**
- * Telemetry - The Stopwatch
- * 
- * Wraps fetch() to measure latency and read server headers
+ * Telemetry Sensor — the "instrumented waiter."
+ *
+ * Instead of a regular fetch(), we wrap it with a stopwatch and
+ * read the custom headers the API stamped on the response.
+ *
+ * The three "stamps" we read:
+ *   X-Cache        → HIT (Redis pantry) or MISS (full DB kitchen)
+ *   X-Response-Time → How long the server itself took (server-side ms)
+ *   Content-Length  → Byte size of the JSON payload
+ *
+ * This runs in the browser — zero cost on the server side.
  */
 
-export interface TelemetryPulse {
-  latency: number;          // total round-trip ms (browser → server → browser)
+export interface SessionPulse {
+  latency: number;          // round-trip ms (browser stopwatch)
   serverTime: number;       // server-only processing ms (from header)
   source: "Redis ⚡" | "Database 🗄️";
   payloadKB: string;        // JSON payload size
@@ -13,16 +21,21 @@ export interface TelemetryPulse {
   payloadSize: string;      // Human-readable e.g. "1.9KB" or "4.2MB"
 }
 
-export async function traceFetch<T>(
+export async function traceFetch(
   url: string,
   options?: RequestInit
-): Promise<{ data: T; pulse: TelemetryPulse }> {
-  const start = performance.now();
-  
-  const response = await fetch(url, options);
+): Promise<{ data: unknown; pulse: SessionPulse }> {
+  const start = performance.now(); // Start the stopwatch
+
+  const response = await fetch(url, {
+    ...options,
+    // Always bypass browser cache so we measure real latency
+    cache: "no-store",
+  });
+
+  const end = performance.now(); // Stop the stopwatch
+
   const data = await response.json();
-  
-  const end = performance.now();
 
   // Read the "stamps" the server put on the response
   const cacheHeader = response.headers.get("X-Cache") ?? "MISS";

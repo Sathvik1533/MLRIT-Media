@@ -1,10 +1,10 @@
-import { PerformanceLab } from "./PerformanceLab";
+import { tenant } from "@/config/tenant";
+import { QualityTester } from "./QualityTester";
 
 export const metadata = {
-  title: "Performance Lab — MLRIT Zero-Lag Architecture",
-  description: "Real-time performance testing and optimization lab",
+  title: `Test Lab — ${tenant.shortName} Performance Observatory`,
 };
 
 export default function TestLabPage() {
-  return <PerformanceLab />;
+  return <QualityTester />;
 }

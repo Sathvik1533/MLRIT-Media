@@ -1,44 +1,68 @@
 "use client";
 
 /**
- * PerformanceHUD — Bottom telemetry bar
- * Shows round-trip metrics
+ * PerformanceHUD — the "cockpit instrument panel" at the bottom of every page.
+ *
+ * Shows three live metrics after each API fetch:
+ *   SOURCE  → Where the data came from (Redis pantry or DB kitchen)
+ *   SPEED   → Round-trip ms (browser stopwatch)
+ *   PAYLOAD → JSON payload size in KB (from Content-Length header)
+ *
+ * Design: thin amber bar, semi-transparent, fixed to viewport bottom.
+ * Fades in once data is loaded — invisible during skeleton phase.
  */
 
-import { TelemetryPulse } from "@/lib/telemetry";
+import type { SessionPulse } from "@/lib/telemetry";
 
-interface Props {
-  pulse: TelemetryPulse | null;
+interface PerformanceHUDProps {
+  pulse: SessionPulse | null;
 }
 
-export function PerformanceHUD({ pulse }: Props) {
+export function PerformanceHUD({ pulse }: PerformanceHUDProps) {
   if (!pulse) return null;
+
+  const sourceColor = pulse.source.includes("Redis") ? "#10b981" : "#F59E0B";
 
   return (
     <div
-      className="fixed bottom-4 left-4 right-4 bg-black/80 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg border border-white/10"
-      style={{ contentVisibility: "auto" }}
+      className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-1.5 text-xs font-mono backdrop-blur-md"
+      style={{
+        background: "rgba(255,255,255,0.92)",
+        borderTop: "1px solid rgba(0,0,0,0.08)",
+        boxShadow: "0 -1px 8px rgba(0,0,0,0.06)",
+      }}
+      aria-label="Performance telemetry"
     >
-      <div className="flex items-center justify-between text-xs font-mono">
-        <div className="flex gap-6">
-          <div>
-            <span className="text-white/60">Latency: </span>
-            <span className="font-semibold">{pulse.latency}ms</span>
-          </div>
-          <div>
-            <span className="text-white/60">Server: </span>
-            <span className="font-semibold">{pulse.serverTime}ms</span>
-          </div>
-          <div>
-            <span className="text-white/60">Source: </span>
-            <span className="font-semibold">{pulse.source}</span>
-          </div>
-          <div>
-            <span className="text-white/60">Size: </span>
-            <span className="font-semibold">{pulse.payloadKB}KB</span>
-          </div>
-        </div>
-      </div>
+      {/* Left: Source indicator */}
+      <span style={{ color: sourceColor }}>
+        SOURCE: {pulse.source}
+      </span>
+
+      {/* Center: Speed */}
+      <span style={{ color: "var(--text-2)" }}>
+        LATENCY:{" "}
+        <span
+          style={{
+            color: pulse.latency < 100 ? "#10b981" : pulse.latency < 300 ? "#F59E0B" : "#ef4444",
+            fontWeight: 600,
+          }}
+        >
+          {pulse.latency}ms
+        </span>
+        {pulse.serverTime > 0 && (
+          <span style={{ color: "var(--text-3)", marginLeft: 4 }}>
+            (server: {pulse.serverTime}ms)
+          </span>
+        )}
+      </span>
+
+      {/* Right: Payload */}
+      <span style={{ color: "var(--text-2)" }}>
+        PAYLOAD:{" "}
+        <span style={{ color: "var(--text)", fontWeight: 600 }}>
+          {pulse.payloadKB === "0.0" ? "—" : `${pulse.payloadKB} KB`}
+        </span>
+      </span>
     </div>
   );
 }

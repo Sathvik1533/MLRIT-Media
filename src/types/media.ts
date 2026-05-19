@@ -34,6 +34,7 @@ export interface MediaAsset {
   capturedAt: string;
   tags?: string[];
   views: number;
+  role?: string | null;
 }
 
 export interface MediaGalleryFilter {

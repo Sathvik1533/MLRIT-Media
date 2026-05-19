@@ -14,6 +14,8 @@ interface MediaGridProps {
   filter?: MediaGalleryFilter;
   onDelete?: (id: string) => Promise<void>;
   onEdit?: (id: string, title: string, category: MediaCategory, description: string) => Promise<void>;
+  onView?: (cloudinaryPublicId: string) => void;
+  onTagClick?: (tag: string) => void;
 }
 
 // ── Edit modal ─────────────────────────────────────────────────────────────────
@@ -143,6 +145,37 @@ function EditModal({
   );
 }
 
+// ── Role badge ─────────────────────────────────────────────────────────────────
+
+const ROLE_COLORS: Record<string, { text: string; bg: string; border: string }> = {
+  hero:      { text: "#60a5fa", bg: "rgba(37,99,235,0.15)",   border: "rgba(37,99,235,0.3)" },
+  banner:    { text: "#c084fc", bg: "rgba(168,85,247,0.15)",  border: "rgba(168,85,247,0.3)" },
+  thumbnail: { text: "#22d3ee", bg: "rgba(6,182,212,0.15)",   border: "rgba(6,182,212,0.3)" },
+  featured:  { text: "#fbbf24", bg: "rgba(245,158,11,0.15)",  border: "rgba(245,158,11,0.3)" },
+};
+
+function RoleBadge({ role }: { role: string }) {
+  const c = ROLE_COLORS[role] ?? { text: "var(--text-2)", bg: "rgba(255,255,255,0.06)", border: "rgba(255,255,255,0.12)" };
+  return (
+    <span
+      style={{
+        fontSize: 9,
+        fontFamily: "var(--font-geist-mono)",
+        fontWeight: 700,
+        letterSpacing: "0.1em",
+        textTransform: "uppercase",
+        color: c.text,
+        background: c.bg,
+        border: `1px solid ${c.border}`,
+        padding: "2px 6px",
+        borderRadius: 4,
+      }}
+    >
+      {role}
+    </span>
+  );
+}
+
 // ── Card action buttons ────────────────────────────────────────────────────────
 
 function CardActions({
@@ -215,7 +248,7 @@ function CardActions({
 
 // ── Main grid ─────────────────────────────────────────────────────────────────
 
-export function MediaGrid({ assets, filter, onDelete, onEdit }: MediaGridProps) {
+export function MediaGrid({ assets, filter, onDelete, onEdit, onView, onTagClick }: MediaGridProps) {
   const [editingAsset, setEditingAsset] = useState<MediaAsset | null>(null);
 
   const filtered = filterAssets(assets, filter);
@@ -234,7 +267,7 @@ export function MediaGrid({ assets, filter, onDelete, onEdit }: MediaGridProps) 
     <>
       <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3 space-y-3">
         {filtered.map((asset, index) => (
-          <div key={asset.id} className="break-inside-avoid group media-card">
+          <div key={asset.id} className="break-inside-avoid group media-card" onClick={() => onView?.(asset.cloudinaryPublicId)}>
             {asset.type === "image" ? (
               <div className="relative overflow-hidden rounded-lg">
                 <MediaImage
@@ -243,6 +276,11 @@ export function MediaGrid({ assets, filter, onDelete, onEdit }: MediaGridProps) 
                   priority={index < 12}
                   className="w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
+                {asset.role && (
+                  <div className="absolute top-2 left-2">
+                    <RoleBadge role={asset.role} />
+                  </div>
+                )}
                 <div
                   className="absolute inset-x-0 bottom-0 px-3 pt-8 pb-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   style={{
@@ -275,9 +313,44 @@ export function MediaGrid({ assets, filter, onDelete, onEdit }: MediaGridProps) 
               </div>
             )}
             {asset.type === "video" && (
-              <p className="mt-1.5 text-sm font-medium truncate" style={{ color: "var(--text-2)" }}>
-                {asset.title}
-              </p>
+              <div className="mt-1.5 flex items-center gap-1.5">
+                <p className="text-sm font-medium truncate flex-1" style={{ color: "var(--text-2)" }}>
+                  {asset.title}
+                </p>
+                {asset.role && <RoleBadge role={asset.role} />}
+              </div>
+            )}
+            {asset.tags && asset.tags.length > 0 && (
+              <div
+                className="flex flex-wrap gap-1 mt-1.5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {asset.tags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => onTagClick?.(tag)}
+                    className="text-[10px] font-mono px-1.5 py-0.5 rounded transition-all duration-150"
+                    style={{
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      color: "var(--text-3)",
+                      cursor: onTagClick ? "pointer" : "default",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (onTagClick) {
+                        e.currentTarget.style.borderColor = "rgba(0,102,255,0.35)";
+                        e.currentTarget.style.color = "var(--accent)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                      e.currentTarget.style.color = "var(--text-3)";
+                    }}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         ))}
