@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { isRedisConfigured, logEntry, getEntries } from "@/lib/redis";
+import { isRedisConfigured, logEntry, getEntries, cacheGet, cacheSet } from "@/lib/redis";
 
 // logRequest is called fire-and-forget on every /api/media request.
 // Signature is intentionally synchronous so callers don't need to await it.
@@ -15,12 +15,19 @@ export function logRequest(
 export async function GET() {
   const start = Date.now();
 
-  // 1. Database health check
+  // 1. Database health check — count cached in Redis for 30s to avoid hammering Neon
   let dbHealth: "OK" | "ERROR" = "ERROR";
   let totalAssets = 0;
   try {
-    totalAssets = await prisma.media.count();
-    dbHealth = "OK";
+    const { value: cached } = await cacheGet<number>("stats:totalAssets");
+    if (cached !== null) {
+      totalAssets = cached;
+      dbHealth = "OK";
+    } else {
+      totalAssets = await prisma.media.count();
+      dbHealth = "OK";
+      await cacheSet("stats:totalAssets", totalAssets, 30);
+    }
   } catch {
     dbHealth = "ERROR";
   }
