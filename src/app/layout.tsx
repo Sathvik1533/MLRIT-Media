@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/ui/Navbar";
+import { tenant } from "@/config/tenant";
 import "./globals.css";
 
 const geist = Geist({
@@ -16,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Media Performance Observatory — MLRIT",
+  title: `Media Performance Observatory — ${tenant.shortName}`,
   description: "Real-time CDN performance benchmarking, Redis cache analysis, and media optimization platform.",
 };
 

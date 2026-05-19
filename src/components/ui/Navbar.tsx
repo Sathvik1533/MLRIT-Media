@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { tenant } from "@/config/tenant";
 
 const LINKS = [
   { href: "/upload",    label: "Upload" },
@@ -52,7 +53,7 @@ export function Navbar() {
               letterSpacing: "-0.02em",
             }}
           >
-            MLRIT
+            {tenant.shortName}
           </span>
           <span
             style={{
