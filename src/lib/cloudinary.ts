@@ -11,6 +11,14 @@
  *   Videos: https://res.cloudinary.com/{cloud_name}/video/upload/{public_id}
  */
 
+if (typeof window === "undefined" && !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
+  throw new Error(
+    "Missing env var: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME\n" +
+    "Add it to .env.local:\n" +
+    "  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name"
+  );
+}
+
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
 
 export interface ImageTransformOptions {
@@ -55,28 +63,4 @@ function buildTransforms(opts: ImageTransformOptions): string {
   parts.push(`q_${opts.quality ?? "auto"}`);
   if (opts.fit) parts.push(`c_${opts.fit}`);
   return parts.join(",");
-}
-
-/**
- * Get optimized thumbnail URL
- */
-export function getThumbnailUrl(publicId: string, size: number = 400): string {
-  return cloudinaryImageUrl(publicId, {
-    width: size,
-    height: size,
-    fit: "fill",
-    quality: "auto",
-    format: "auto",
-  });
-}
-
-/**
- * Get full-size optimized URL
- */
-export function getFullSizeUrl(publicId: string): string {
-  return cloudinaryImageUrl(publicId, {
-    width: 1920,
-    quality: "auto",
-    format: "auto",
-  });
 }
