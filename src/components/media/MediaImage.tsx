@@ -1,21 +1,14 @@
-/**
- * MediaImage — wraps next/image with Cloudinary transforms.
- *
- * WHY: next/image handles lazy-loading, blur placeholders, and srcSet.
- * We inject Cloudinary's transform URL so the CDN resizes on the fly —
- * no need to pre-generate thumbnails. Cloudinary picks webp/avif per browser.
- */
+"use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { cloudinaryImageUrl } from "@/lib/cloudinary";
 import type { MediaAsset } from "@/types/media";
 
 interface MediaImageProps {
   asset: MediaAsset;
-  /** Render width in px — drives Cloudinary transform + next/image sizing */
   displayWidth?: number;
   className?: string;
-  /** Load eagerly (above the fold — first 6 assets) */
   priority?: boolean;
 }
 
@@ -25,11 +18,12 @@ export function MediaImage({
   className,
   priority = false,
 }: MediaImageProps) {
-  const src = cloudinaryImageUrl(asset.cloudinaryPublicId, {
+  const primarySrc = cloudinaryImageUrl(asset.cloudinaryPublicId, {
     width: displayWidth,
     format: "auto",
     quality: "auto",
   });
+  const [src, setSrc] = useState(primarySrc);
 
   const aspectRatio = asset.height / asset.width;
   const displayHeight = Math.round(displayWidth * aspectRatio);
@@ -45,6 +39,11 @@ export function MediaImage({
       placeholder={asset.blurDataURL ? "blur" : "empty"}
       blurDataURL={asset.blurDataURL}
       sizes={`(max-width: 768px) 100vw, (max-width: 1200px) 50vw, ${displayWidth}px`}
+      onError={() => {
+        if (asset.cloudFrontUrl && src !== asset.cloudFrontUrl) {
+          setSrc(asset.cloudFrontUrl);
+        }
+      }}
     />
   );
 }

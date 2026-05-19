@@ -3,6 +3,7 @@ import { createHash } from "crypto";
 import { prisma } from "@/lib/db";
 import { cacheInvalidatePattern } from "@/lib/redis";
 import { requireAdmin } from "@/lib/auth";
+import { s3Delete, cfInvalidate } from "@/lib/s3";
 
 const CLOUD      = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
 const API_KEY    = process.env.CLOUDINARY_API_KEY!;
@@ -46,6 +47,9 @@ export async function DELETE(
       media.cloudinaryPublicId,
       media.type === "video" ? "video" : "image"
     );
+    if (media.s3Key) {
+      await Promise.all([s3Delete(media.s3Key), cfInvalidate(media.s3Key)]);
+    }
     await prisma.media.delete({ where: { id } });
     await Promise.all([
       cacheInvalidatePattern("assets:*"),
@@ -94,6 +98,7 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: "Nothing to update" }, { status: 400 });
     }
     const updated = await prisma.media.update({ where: { id }, data });
+    if (updated.s3Key) void cfInvalidate(updated.s3Key);
     await Promise.all([
       cacheInvalidatePattern("assets:*"),
       cacheInvalidatePattern("media:*"),

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { cloudinaryVideoUrl } from "@/lib/cloudinary";
 import type { MediaAsset } from "@/types/media";
 
@@ -7,7 +10,8 @@ interface VideoCardProps {
 }
 
 export function VideoCard({ asset, className }: VideoCardProps) {
-  const src = cloudinaryVideoUrl(asset.cloudinaryPublicId);
+  const primarySrc = cloudinaryVideoUrl(asset.cloudinaryPublicId);
+  const [src, setSrc] = useState(primarySrc);
 
   return (
     <div className={className} style={{ borderRadius: "8px", overflow: "hidden" }}>
@@ -19,8 +23,12 @@ export function VideoCard({ asset, className }: VideoCardProps) {
           className="w-full block"
           style={{ borderRadius: "8px" }}
           aria-label={asset.title}
+          onError={() => {
+            if (asset.cloudFrontUrl && src !== asset.cloudFrontUrl) {
+              setSrc(asset.cloudFrontUrl);
+            }
+          }}
         />
-        {/* Amber play-button tint visible before interaction */}
         <div
           className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover/video:opacity-100 transition-opacity"
           style={{ borderRadius: "8px" }}

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { cacheInvalidatePattern, checkRateLimit } from "@/lib/redis";
 import { autoTag } from "@/lib/autotag";
 import { requireAdmin } from "@/lib/auth";
+import { isS3Configured, s3Upload } from "@/lib/s3";
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
 const API_KEY = process.env.CLOUDINARY_API_KEY!;
@@ -93,6 +94,20 @@ export async function POST(request: NextRequest) {
     const aiTags = await autoTag(urlForTagging, resourceType, category);
     const allTags = Array.from(new Set([category, ...userTags, ...aiTags]));
 
+    // Upload original to S3 alongside Cloudinary (S3 failure is non-fatal)
+    let s3Key: string | undefined;
+    if (isS3Configured) {
+      const ext = file.name.split(".").pop() ?? file.type.split("/")[1] ?? "bin";
+      s3Key = `${cdn.public_id}.${ext}`;
+      try {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        await s3Upload(s3Key, buffer, file.type);
+      } catch (e) {
+        console.error("[upload/media] S3 upload failed (non-fatal):", e);
+        s3Key = undefined;
+      }
+    }
+
     const media = await prisma.media.create({
       data: {
         title,
@@ -101,6 +116,7 @@ export async function POST(request: NextRequest) {
         type: resourceType,
         tags: JSON.stringify(allTags),
         ...(roleRaw ? { role: roleRaw } : {}),
+        ...(s3Key ? { s3Key } : {}),
       },
     });
 

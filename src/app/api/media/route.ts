@@ -24,10 +24,13 @@ const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
 const IMG_BASE = `https://res.cloudinary.com/${CLOUD}/image/upload`;
 const VID_BASE = `https://res.cloudinary.com/${CLOUD}/video/upload`;
 
+const CF_DOMAIN = process.env.CLOUDFRONT_DOMAIN ?? "";
+
 // Transform a DB row to the MediaAsset shape the UI expects
 function toMediaAsset(row: {
   id: string;
   cloudinaryPublicId: string;
+  s3Key: string | null;
   title: string;
   description: string | null;
   category: string;
@@ -65,6 +68,8 @@ function toMediaAsset(row: {
     height: isVideo ? 480 : 1080,
     capturedAt: row.createdAt.toISOString().split("T")[0],
     views: row.views,
+    s3Key: row.s3Key ?? undefined,
+    cloudFrontUrl: row.s3Key && CF_DOMAIN ? `https://${CF_DOMAIN}/${row.s3Key}` : undefined,
   };
 }
 
