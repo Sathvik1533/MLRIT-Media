@@ -159,7 +159,7 @@ function ToolCard({
 
 function Skeleton() {
   return (
-    <div className="grid grid-cols-4 gap-3 mb-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
       {[...Array(4)].map((_, i) => (
         <div key={i} className="rounded-xl h-28 skeleton-shimmer" />
       ))}
@@ -291,7 +291,7 @@ export function DashboardClient() {
     <div className="max-w-7xl mx-auto px-6 py-8">
 
       {/* Header ──────────────────────────────────────────────────────────── */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-8">
         <div>
           <h1
             style={{
@@ -324,7 +324,7 @@ export function DashboardClient() {
       {!stats ? (
         <Skeleton />
       ) : (
-        <div className="grid grid-cols-4 gap-3 mb-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
           <KpiCard
             label="Avg Latency"
             value={fmtMs(stats.load.avgLatencyMs)}
@@ -355,7 +355,7 @@ export function DashboardClient() {
 
       {/* Cache + System panels ───────────────────────────────────────────── */}
       {stats && (
-        <div className="grid grid-cols-2 gap-3 mb-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
 
           {/* Cache Analysis */}
           <Panel title="Cache Analysis">
@@ -455,7 +455,7 @@ export function DashboardClient() {
       </div>
 
       {/* Tool cards ──────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         <ToolCard
           href="/upload"
           title="Upload & Stress Test"

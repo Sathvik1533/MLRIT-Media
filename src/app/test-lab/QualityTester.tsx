@@ -213,7 +213,7 @@ export function QualityTester() {
 
       {/* ── Header ── */}
       <div style={{ borderBottom: "1px solid var(--border)", background: "var(--surface)", position: "sticky", top: 0, zIndex: 10 }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "16px clamp(12px, 4vw, 24px)", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
             <h1 style={{ margin: 0, fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.04em", lineHeight: 1.1 }}>
               Quality Variant Benchmark
@@ -224,7 +224,7 @@ export function QualityTester() {
           </div>
 
           {good.length > 0 && (
-            <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
               {[
                 { label: "variants", val: `${good.length}/5`,                      color: "var(--green)" },
                 { label: "best",     val: fmtMs(Math.min(...good.map(r=>r.totalMs))), color: "var(--green)" },
@@ -241,7 +241,7 @@ export function QualityTester() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px", display: "flex", flexDirection: "column", gap: 20 }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "24px clamp(12px, 4vw, 24px)", display: "flex", flexDirection: "column", gap: 20 }}>
 
         {/* ── Input + Run ── */}
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px 24px" }}>

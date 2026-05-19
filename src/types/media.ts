@@ -35,6 +35,8 @@ export interface MediaAsset {
   tags?: string[];
   views: number;
   role?: string | null;
+  s3Key?: string;
+  cloudFrontUrl?: string;
 }
 
 export interface MediaGalleryFilter {

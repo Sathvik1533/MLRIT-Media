@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { tenant } from "@/config/tenant";
@@ -13,6 +14,7 @@ const LINKS = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav
@@ -24,26 +26,15 @@ export function Navbar() {
         borderBottom: "1px solid rgba(0,0,0,0.07)",
       }}
     >
+      {/* Main bar */}
       <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          padding: "0 48px",
-          height: 52,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+        className="mx-auto px-4 md:px-12 flex items-center justify-between"
+        style={{ maxWidth: 1200, height: 52 }}
       >
         {/* Brand */}
         <Link
           href="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 9,
-            textDecoration: "none",
-          }}
+          className="flex items-center gap-2 no-underline"
         >
           <span
             style={{
@@ -77,16 +68,12 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Center nav */}
+        {/* Center nav — hidden on mobile */}
         <div
+          className="hidden md:flex items-center gap-0.5 rounded-[10px] p-[3px]"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
             background: "rgba(0,0,0,0.04)",
             border: "1px solid rgba(0,0,0,0.07)",
-            borderRadius: 10,
-            padding: "3px",
           }}
         >
           {LINKS.map(({ href, label }) => {
@@ -114,31 +101,103 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Right: live indicator */}
-        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-          <span
-            className="live-dot"
-            style={{
-              width: 5,
-              height: 5,
-              borderRadius: "50%",
-              background: "var(--green)",
-              boxShadow: "0 0 6px var(--green)",
-            }}
-          />
-          <span
-            style={{
-              fontSize: 10,
-              fontFamily: "var(--font-geist-mono)",
-              fontWeight: 600,
-              color: "#059669",
-              letterSpacing: "0.08em",
-            }}
+        {/* Right side */}
+        <div className="flex items-center gap-3">
+          {/* Live indicator — always visible */}
+          <div className="flex items-center gap-1.5">
+            <span
+              className="live-dot"
+              style={{
+                width: 5,
+                height: 5,
+                borderRadius: "50%",
+                background: "var(--green)",
+                boxShadow: "0 0 6px var(--green)",
+              }}
+            />
+            <span
+              style={{
+                fontSize: 10,
+                fontFamily: "var(--font-geist-mono)",
+                fontWeight: 600,
+                color: "#059669",
+                letterSpacing: "0.08em",
+              }}
+            >
+              Live
+            </span>
+          </div>
+
+          {/* Hamburger button — visible on mobile only */}
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-11 h-11 rounded-lg gap-[5px]"
+            style={{ background: "transparent", border: "1px solid rgba(0,0,0,0.07)" }}
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
-            Live
-          </span>
+            <span
+              className="block rounded-full transition-all duration-200"
+              style={{
+                width: 16,
+                height: 1.5,
+                background: "var(--text-2)",
+                transformOrigin: "center",
+                transform: menuOpen ? "translateY(6.5px) rotate(45deg)" : "none",
+              }}
+            />
+            <span
+              className="block rounded-full transition-all duration-200"
+              style={{
+                width: 16,
+                height: 1.5,
+                background: "var(--text-2)",
+                opacity: menuOpen ? 0 : 1,
+              }}
+            />
+            <span
+              className="block rounded-full transition-all duration-200"
+              style={{
+                width: 16,
+                height: 1.5,
+                background: "var(--text-2)",
+                transformOrigin: "center",
+                transform: menuOpen ? "translateY(-6.5px) rotate(-45deg)" : "none",
+              }}
+            />
+          </button>
         </div>
       </div>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div
+          className="md:hidden px-4 pb-3 flex flex-col gap-1"
+          style={{ borderTop: "1px solid rgba(0,0,0,0.07)" }}
+        >
+          {LINKS.map(({ href, label }) => {
+            const active = pathname.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="block rounded-xl py-3 px-4 text-sm font-medium transition-all duration-150 no-underline"
+                style={{
+                  color: active ? "var(--text)" : "var(--text-2)",
+                  background: active ? "var(--surface-2)" : "transparent",
+                  fontWeight: active ? 600 : 500,
+                  minHeight: 44,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </nav>
   );
 }
